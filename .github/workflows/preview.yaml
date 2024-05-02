@@ -17,7 +17,7 @@ jobs:
         if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize'
         runs-on: ubuntu-latest
         env:
-            IMAGE_NAME: ${HOSTNAME}/${PROJECT}-api-${SERVICE}/${GITHUB_SHA:0:8}
+            IMAGE_NAME: ${HOSTNAME}/${PROJECT}-api-${SERVICE}:${GITHUB_SHA:0:8}
         steps:
             - name: Checkout
               uses: actions/checkout@v4
