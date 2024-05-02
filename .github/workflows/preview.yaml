@@ -23,6 +23,10 @@ jobs:
             - name: ls
               run: ls -al
 
+
+            - name: ls
+              run: ls ./api -al
+
             - run: |
                 gcloud config set project ${{env.PROJECT}}
                 gcloud config set run/platform managed
