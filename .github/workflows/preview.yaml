@@ -24,8 +24,13 @@ jobs:
                 gcloud config set project ${PROJECT}
                 gcloud config set run/platform managed
                 gcloud config set run/region ${REGION}
-                gcloud auth configure-docker
-      
+                gcloud auth configure-docker --quiet
+
+            - name: auth cloud SDK
+              uses: google-github-actions/auth@v0.4.0
+              with:
+                credentials_json: ${{ secrets.GCP_SA_KEY_DEV }}
+
             - name: Set up Cloud SDK
               uses: google-github-actions/setup-gcloud@v2
               with:
