@@ -5,9 +5,9 @@ on:
         types: [synchronize, opened, reopened, closed]
 
 env:
-    PROJECT: "floatcast-dev"
-    HOSTNAME: "gcr.io"
-    REGION: "asia-northeast1"
+    PROJECT: floatcast-dev
+    HOSTNAME: gcr.io
+    REGION: asia-northeast1
     SERVICE: preview-${{ github.event.number }}
     GCP_SA_KEY_DEV: ${{ secrets.GCP_SA_KEY_DEV }}
 
