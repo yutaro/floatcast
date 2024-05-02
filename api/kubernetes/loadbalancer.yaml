@@ -1,0 +1,12 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: floatcast-prod
+spec:
+  type: LoadBalancer
+  selector:
+    app: floatcast-prod
+  ports:
+  - name: http
+    port: 8080
+    targetPort: 8080

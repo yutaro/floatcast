@@ -1,0 +1,31 @@
+FROM golang:1.22.2
+
+ARG GITHUB_TOKEN
+ARG VER
+ARG REV
+
+ENV VER=$VER
+ENV REV=$REV
+
+RUN apk --update add \
+		git \
+		make \
+		curl
+
+WORKDIR /go/src/github.com/yutaro/floatcast
+
+ADD . /go/src/github.com/yutaro/floatcast
+RUN make build_all
+
+FROM alpine
+
+COPY --from=build-env /bin/api /api
+
+RUN apk add --no-cache tzdata ca-certificates
+
+RUN addgroup -g 1000 -S kouzoh && adduser -D -H -u 1000 -S kouzoh -G kouzoh
+USER kouzoh
+
+EXPOSE 5000
+
+ENTRYPOINT ["/bin/api"]

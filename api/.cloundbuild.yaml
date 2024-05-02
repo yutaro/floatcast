@@ -1,0 +1,18 @@
+steps:
+
+- name: gcr.io/cloud-builders/docker
+  args:
+  - build
+  - --pull
+  - -t
+  - $_COMPLETE_IMAGE_NAME
+  - --build-arg
+  - GITHUB_TOKEN=$_GITHUB_TOKEN
+  - --build-arg
+  - VER=$_VER
+  - --build-arg
+  - REV=$_REV
+  - .
+
+images:
+  - $_COMPLETE_IMAGE_NAME
