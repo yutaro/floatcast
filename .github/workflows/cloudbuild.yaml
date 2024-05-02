@@ -1,6 +1,6 @@
 name: Cloudbuild
 env:
-  PROJECT_ID: ${{ secrets.GCP_PROJECT_ID }}
+  PROJECT_ID: "floatcast-prod"
   GCP_SA_KEY: ${{ secrets.GCP_SA_KEY }}
 
 on:
@@ -22,7 +22,7 @@ jobs:
       uses: google-github-actions/setup-gcloud@v2
       with:
         service_account_key: ${{ secrets.GCP_SA_KEY }}
-        project_id: "floatcast-prod"
+        PROJECT_ID: "floatcast-prod"
         export_default_credentials: true
 
     - name: Configure Docker
