@@ -16,8 +16,6 @@ jobs:
         name: Setup, Build, Publish and Deploy
         if: github.event.action == 'opened' || github.event.action == 'reopened' || github.event.action == 'synchronize'
         runs-on: ubuntu-latest
-        env:
-            IMAGE_NAME: ${HOSTNAME}/${PROJECT}-api-${SERVICE}:${GITHUB_SHA:0:8}
         steps:
             - name: Checkout
               uses: actions/checkout@v4
@@ -34,16 +32,16 @@ jobs:
            
             - name: Build
               run: |
-                docker build -t ${IMAGE_NAME} .
+                docker build -t ${HOSTNAME}/${PROJECT}-api-${SERVICE}:${GITHUB_SHA:0:8} .
             
             - name: Publish
               run: |
-                docker push ${IMAGE_NAME}
+                docker push ${HOSTNAME}/${PROJECT}-api-${SERVICE}:${GITHUB_SHA:0:8}
             
             - name: Deploy
               run: |
                 gcloud run deploy api-${SERVICE} \
-                    --image ${IMAGE_NAME}
+                    --image ${HOSTNAME}/${PROJECT}-api-${SERVICE}:${GITHUB_SHA:0:8}
                 PREVIEW_URL=$(gcloud run services describe api-${SERVICE} --format 'value(status.url)')
                 gcloud run services update api-${SERVICE} --set-env-vars BASE_URL=${PREVIEW_URL}
 
