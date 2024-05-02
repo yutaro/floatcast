@@ -43,7 +43,7 @@ jobs:
            
             - name: Build
               run: |
-                docker build -t ${{env.HOSTNAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} /api
+                docker build -t ${{env.HOSTNAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ./api
             
             - name: Publish
               run: |
