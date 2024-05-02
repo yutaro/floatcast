@@ -27,6 +27,9 @@ jobs:
 
     - name: Configure Docker
       run: gcloud auth configure-docker
+
+    - name: Set project ID
+      run: gcloud config set project floatcast-prod
     
     - name: Build Docker Image with CloudBuild and save to GCR
       shell: bash
