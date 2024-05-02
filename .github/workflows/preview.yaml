@@ -32,7 +32,7 @@ jobs:
            
             - name: Build
               run: |
-                docker build -t ${HOSTNAME}/${PROJECT}-api-${SERVICE}:${GITHUB_SHA:0:8} .
+                docker build -t ${HOSTNAME}/${PROJECT}-api-${SERVICE}:${GITHUB_SHA:0:8} ./api
             
             - name: Publish
               run: |
