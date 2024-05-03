@@ -10,6 +10,7 @@ env:
     REGION: asia-northeast1
     SERVICE: preview-${{ github.event.number }}
     REPONAME: floatcast-repo-dev
+    GH_TOKEN: ${{github.token}}
     GCP_SA_KEY_DEV: ${{ secrets.GCP_SA_KEY_DEV }}
 
 jobs:
