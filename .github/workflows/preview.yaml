@@ -50,7 +50,7 @@ jobs:
             
             - name: Deploy
               run: |
-                gcloud run deploy api-${{env.SERVICE}} \
+                gcloud run deploy api-${{env.SERVICE}} --allow-unauthenticated \
                     --image ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
                 PREVIEW_URL=$(gcloud run services describe api-${{env.SERVICE}} --format 'value(status.url)')
                 gcloud run services update api-${{env.SERVICE}} --set-env-vars BASE_URL=${PREVIEW_URL}
