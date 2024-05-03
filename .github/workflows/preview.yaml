@@ -21,13 +21,6 @@ jobs:
         steps:
             - name: Checkout
               uses: actions/checkout@v4
-            
-            - name: ls
-              run: ls -al
-
-
-            - name: ls
-              run: ls ./api -al
 
             - run: |
                 gcloud config set project ${{env.PROJECT}}
@@ -65,4 +58,4 @@ jobs:
             - name: Notify
               run: |
                 PREVIEW_URL=$(gcloud run services describe api-${{env.SERVICE}} --format 'value(status.url)')
-                gh pr comment -F ./comments "Preview URL: ${PREVIEW_URL}"
+                gh pr comment -b "Preview URL: ${PREVIEW_URL}"
