@@ -48,16 +48,16 @@ jobs:
            
             - name: Build
               run: |
-                docker build -t ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}-${GITHUB_SHA:0:8} ./api
+                docker build -t ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ./api
             
             - name: Publish
               run: |
-                docker push ${{env.HOSTNAME}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}-${GITHUB_SHA:0:8}
+                docker push ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
             
             - name: Deploy
               run: |
                 gcloud run deploy api-${{env.SERVICE}} \
-                    --image ${{env.HOSTNAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}-${GITHUB_SHA:0:8}
+                    --image ${{env.HOSTNAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
                 PREVIEW_URL=$(gcloud run services describe api-${{env.SERVICE}} --format 'value(status.url)')
                 gcloud run services update api-${{env.SERVICE}} --set-env-vars BASE_URL=${PREVIEW_URL}
 
