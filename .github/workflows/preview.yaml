@@ -40,24 +40,39 @@ jobs:
                 project_id: ${{env.PROJECT}}
                 export_default_credentials: true
            
-            - name: Build
+            - name: Build (API Server)
               run: |
                 docker build -t ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ./api
             
-            - name: Publish
+            - name: Publish (API Server)
               run: |
                 docker push ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
             
-            - name: Deploy
+            - name: Deploy (API Server)
               run: |
                 gcloud run deploy api-${{env.SERVICE}} --allow-unauthenticated \
                     --image ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
                 PREVIEW_URL=$(gcloud run services describe api-${{env.SERVICE}} --format 'value(status.url)')
                 gcloud run services update api-${{env.SERVICE}} --set-env-vars BASE_URL=${PREVIEW_URL}
 
+            - name: Build (Web Server)
+              run: |
+                docker build -t ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-web-${{env.SERVICE}}:${GITHUB_SHA:0:8} ./web
+            
+            - name: Publish (Web Server)
+              run: |
+                docker push ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-web-${{env.SERVICE}}:${GITHUB_SHA:0:8}
+            
+            - name: Deploy (Web Server)
+              run: |
+                gcloud run deploy web-${{env.SERVICE}} --allow-unauthenticated \
+                    --image ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-web-${{env.SERVICE}}:${GITHUB_SHA:0:8}
+                PREVIEW_URL=$(gcloud run services describe web-${{env.SERVICE}} --format 'value(status.url)')
+                gcloud run services update web-${{env.SERVICE}} --set-env-vars BASE_URL=${PREVIEW_URL}
+
             - name: Notify
               run: |
-                PREVIEW_URL=$(gcloud run services describe api-${{env.SERVICE}} --format 'value(status.url)')
+                PREVIEW_URL=$(gcloud run services describe web-${{env.SERVICE}} --format 'value(status.url)')
                 gh pr comment ${{ github.event.number }} -b "Preview URL: ${PREVIEW_URL}"
 
     cleanup-preview:
@@ -83,7 +98,12 @@ jobs:
             project_id: ${{env.PROJECT}}
             export_default_credentials: true
 
-        - name: Delete the Cloud Run Service
+        - name: Delete the Cloud Run Service (API Server)
           run: gcloud --quiet run services delete api-${{env.SERVICE}}
-        - name: Delete the Docker image in GCR
+        - name: Delete the Docker image in GCR (API Server)
           run: gcloud artifacts docker images delete ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}} --delete-tags --quiet
+
+        - name: Delete the Cloud Run Service (Web Server)
+          run: gcloud --quiet run services delete web-${{env.SERVICE}}
+        - name: Delete the Docker image in GCR (Web Server)
+          run: gcloud artifacts docker images delete ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-web-${{env.SERVICE}} --delete-tags --quiet

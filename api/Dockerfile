@@ -5,7 +5,6 @@ RUN apk --update add \
 		make \
 		curl
 
-
 WORKDIR /api
 ADD . .
 
