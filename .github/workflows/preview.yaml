@@ -86,4 +86,4 @@ jobs:
         - name: Delete the Cloud Run Service
           run: gcloud --quiet run services delete api-${{env.SERVICE}}
         - name: Delete the Docker image in GCR
-          run: gcloud container images delete ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}} --force-delete-tags --quiet
+          run: gcloud artifacts docker images delete ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}} --delete-tags --quiet
