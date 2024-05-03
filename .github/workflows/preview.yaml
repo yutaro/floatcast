@@ -58,4 +58,4 @@ jobs:
             - name: Notify
               run: |
                 PREVIEW_URL=$(gcloud run services describe api-${{env.SERVICE}} --format 'value(status.url)')
-                gh pr comment -b "Preview URL: ${PREVIEW_URL}"
+                gh pr comment ${{ github.event.number }} -b "Preview URL: ${PREVIEW_URL}"
