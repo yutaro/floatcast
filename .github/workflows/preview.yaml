@@ -9,6 +9,7 @@ env:
     HOSTNAME: asia-northeast1-docker.pkg.dev
     REGION: asia-northeast1
     SERVICE: preview-${{ github.event.number }}
+    REPONAME: floatcast-repo-dev
     GCP_SA_KEY_DEV: ${{ secrets.GCP_SA_KEY_DEV }}
 
 jobs:
@@ -51,11 +52,11 @@ jobs:
 
             - name: Tag
               run: |
-                docker tag ${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
+                docker tag ${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
             
             - name: Publish
               run: |
-                docker push ${{env.HOSTNAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
+                docker push ${{env.HOSTNAME}}/${{env.REPONAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
             
             - name: Deploy
               run: |
