@@ -6,7 +6,7 @@ on:
 
 env:
     PROJECT: floatcast-dev
-    HOSTNAME: asia.gcr.io
+    HOSTNAME: asia-northeast1-docker.pkg.dev
     REGION: asia-northeast1
     SERVICE: preview-${{ github.event.number }}
     GCP_SA_KEY_DEV: ${{ secrets.GCP_SA_KEY_DEV }}
@@ -47,7 +47,11 @@ jobs:
            
             - name: Build
               run: |
-                docker build -t ${{env.HOSTNAME}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ./api
+                docker build -t ${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ./api
+
+            - name: Tag
+              run: |
+                docker tag ${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8} ${{env.HOSTNAME}}/${{env.PROJECT}}/${{env.PROJECT}}-api-${{env.SERVICE}}:${GITHUB_SHA:0:8}
             
             - name: Publish
               run: |
