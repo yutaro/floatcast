@@ -32,7 +32,7 @@ jobs:
                 gcloud config set project ${{env.PROJECT}}
                 gcloud config set run/platform managed
                 gcloud config set run/region ${{env.REGION}}
-                gcloud auth configure-docker --quiet
+                gcloud auth configure-docker asia-northeast1-docker.pkg.dev --quiet
 
             - name: auth cloud SDK
               uses: google-github-actions/auth@v0.4.0
